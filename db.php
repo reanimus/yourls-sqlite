@@ -281,3 +281,11 @@ function yourls_create_sqlite_tables() {
 
     return array( 'success' => $success_msg, 'error' => $error_msg );
 }
+
+/**
+ * @return \YOURLS\Database\YDB
+ */
+function yourls_get_db() {
+    global $ydb;
+    return ( $ydb instanceof \YOURLS\Database\YDB ) ? $ydb : yourls_db_connect();
+}
