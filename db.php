@@ -1,8 +1,8 @@
 <?php
 /*
 SQLite driver for YOURLS.
-Version: 1.1
-This driver requires YOURLS 1.7.3 -- not before -- not after!
+Version: 1.2
+This driver requires YOURLS 1.7.4 -- not before -- not after!
 Author: Ozh
 */
 
@@ -43,7 +43,7 @@ function yourls_db_sqlite_connect() {
     $ydb->init();
 
     // Past this point, we're connected
-    yourls_debug_log(sprintf('Opened database %s ', $dbname, $dbhost));
+    yourls_debug_log(sprintf('Opened database %s ', $dbname));
 
     // Custom tables to be created upon install
     yourls_add_filter( 'shunt_yourls_create_sql_tables', 'yourls_create_sqlite_tables' );
@@ -52,11 +52,11 @@ function yourls_db_sqlite_connect() {
     yourls_add_filter( 'stat_query_dates', 'yourls_sqlite_stat_query_dates' );
     
     // Custom stat query to get last 24 hours hits
-    yourls_add_filter( 'stat_query_last24h', create_function( '', 'return "SELECT 1;";') ); // just bypass original query
+    yourls_add_filter( 'stat_query_last24h', function() { return "SELECT 1;"; }); // just bypass original query
     yourls_add_filter( 'pre_yourls_info_last_24h', 'yourls_sqlite_last_24h_hits' );         // use this one instead
 
     // Return version for compat
-    yourls_add_filter( 'shunt_get_database_version', create_function( '', 'return "5.0";') );
+    yourls_add_filter( 'shunt_get_database_version', function() { return "5.0";} );
 
     // Shunt get_all_options to prevent error from SHOW TABLES query
     yourls_add_filter( 'shunt_all_options', 'yourls_sqlite_get_all_options' );
@@ -280,4 +280,12 @@ function yourls_create_sqlite_tables() {
     }
 
     return array( 'success' => $success_msg, 'error' => $error_msg );
+}
+
+/**
+ * @return \YOURLS\Database\YDB
+ */
+function yourls_get_db() {
+    global $ydb;
+    return ( $ydb instanceof \YOURLS\Database\YDB ) ? $ydb : yourls_db_connect();
 }
