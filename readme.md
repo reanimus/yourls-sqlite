@@ -1,8 +1,8 @@
-# SQLite Driver for YOURLS 1.7.3
+# SQLite Driver for YOURLS 1.7.10
 
 ## What
 
-This is a custom DB layer that allows to use YOURLS with PDO + SQLite. This requires **YOURLS 1.7.3**, not before, not after. See [YOURLS releases](https://github.com/YOURLS/YOURLS/releases).
+This is a custom DB layer that allows to use YOURLS with PDO + SQLite. This requires **YOURLS 1.7.10**, not before, not after. See [YOURLS releases](https://github.com/YOURLS/YOURLS/releases).
 
 This is experimental, mostly to show how it should be done, ie without [hacking core file](https://github.com/YOURLS/YOURLS/wiki/Dont-Hack-Core) - see [YOURLS issue #1337](https://github.com/YOURLS/YOURLS/issues/1337) (1337, for real!).
 
@@ -10,7 +10,8 @@ If you notice something that doesn't work as expected, please open an issue with
 
 ## How
 
-* Drop these files in `/user/`, next to your `config.php` (this is *not* a plugin)
+* Enable either the **gmp** or the **bcmath** extension for PHP.
+* Drop **db.php** in `/user/`, next to your `config.php` (this is *not* a plugin)
 * Load YOURLS: the first time, it will create a fresh SQlite DB in that same `user` directory
 * Have fun
 
